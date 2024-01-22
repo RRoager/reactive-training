@@ -25,4 +25,31 @@ public class ReactiveTrainingTest {
                 .expectNext("Mono is empty, so here's another Mono")
                 .verifyComplete();
     }
+
+    @Test
+    void fluxOnErrorReturn() {
+        StepVerifier.create(ReactiveTraining.fluxOnErrorReturn())
+                .expectNextCount(3)
+                .verifyComplete();
+    }
+
+    @Test
+    void fluxDoOnError() {
+        StepVerifier.create(ReactiveTraining.fluxDoOnError())
+                .expectError(FluxException.class)
+                .verify();
+    }
+
+    @Test
+    void exceptionMonoOnErrorContinueError() {
+        StepVerifier.create(ReactiveTraining.exceptionMonoOnErrorContinue("abc"))
+                .verifyComplete();
+    }
+
+    @Test
+    void exceptionMonoOnErrorContinueSuccess() {
+        StepVerifier.create(ReactiveTraining.exceptionMonoOnErrorContinue("Hello there"))
+                .expectNext("Hello there")
+                .verifyComplete();
+    }
 }
